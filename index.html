@@ -5,112 +5,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wanda · Monthly Conversation Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js"></script>
 <style>
   :root{
-    --ink:#0E1826;
-    --panel:#152438;
-    --panel-2:#1B2E47;
-    --line:rgba(255,255,255,0.08);
-    --paper:#EDF1F7;
-    --muted:#8CA0BD;
-    --teal:#4FD1C5;
-    --teal-dim:rgba(79,209,197,0.14);
-    --amber:#F0B429;
-    --amber-dim:rgba(240,180,41,0.14);
-    --coral:#F0685F;
-    --coral-dim:rgba(240,104,95,0.14);
-    --violet:#9B8CF2;
-    --violet-dim:rgba(155,140,242,0.14);
+    --bg:#FFFFFF;
+    --panel:#F1FAF8;
+    --panel-2:#E3F2EF;
+    --line:rgba(0,70,67,0.15);
+    --text:#062C29;
+    --muted:#4C726D;
+    --teal:#00826E;
+    --teal-dim:rgba(0,130,110,0.12);
+    --rose:#EB3B81;
+    --rose-dim:rgba(235,59,129,0.14);
+    --yellow:#EFEB6A;
+    --gold:#93720A;
+    --gold-bg:#FBF2C8;
     --radius:14px;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;background:var(--ink);color:var(--paper);font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Geist',sans-serif;-webkit-font-smoothing:antialiased;}
   body{padding:0 0 80px;}
   .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .mono{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;}
 
   header{padding:52px 0 34px;border-bottom:1px solid var(--line);}
-  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 14px;}
-  h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4.2vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-0.01em;}
+  .eyebrow{font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--rose);margin:0 0 14px;}
+  h1{font-weight:800;font-size:clamp(30px,4.2vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-0.01em;}
   h1 span{color:var(--muted);font-weight:500;}
   .sub{color:var(--muted);font-size:15.5px;max-width:680px;line-height:1.55;margin:0 0 10px;}
-  .manual-note{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--teal);margin:0 0 26px;}
+  .manual-note{font-weight:700;font-size:13.5px;color:var(--gold);margin:0 0 26px;}
   .sourcebar{display:flex;flex-wrap:wrap;gap:10px;}
-  .pill{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--paper);background:var(--panel-2);border:1px solid var(--line);padding:7px 13px;border-radius:100px;display:flex;align-items:center;gap:7px;}
-  .pill a{color:var(--teal);text-decoration:none;}
+  .pill{font-size:12.5px;font-weight:500;color:var(--text);background:var(--panel-2);border:1px solid var(--line);padding:7px 13px;border-radius:100px;display:flex;align-items:center;gap:7px;}
+  .pill a{color:var(--teal);text-decoration:none;font-weight:600;}
   .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none;}
-  .dot.done{background:var(--teal);}
 
   .coverage{margin:36px 0 0;}
   .coverage-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
-  .coverage-top .label{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
-  .coverage-top .value{font-family:'Space Grotesk',sans-serif;font-size:15px;color:var(--paper);}
+  .coverage-top .label{font-weight:700;font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .coverage-top .value{font-size:15px;color:var(--text);font-weight:600;}
   .track{width:100%;height:34px;border-radius:8px;overflow:hidden;display:flex;background:var(--panel);border:1px solid var(--line);}
-  .seg{height:100%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink);font-weight:600;}
-  .seg.done{background:var(--teal);width:100%;}
+  .seg{height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+  .seg.done{background:var(--teal);width:100%;color:#FFFFFF;}
 
   section{padding:46px 0 0;}
-  .stitle{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;margin:0 0 4px;}
+  .stitle{font-size:22px;font-weight:800;margin:0 0 4px;}
   .sdesc{color:var(--muted);font-size:14px;margin:0 0 22px;max-width:720px;line-height:1.5;}
 
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 18px;}
-  .kpi .n{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;line-height:1;}
+  .kpi .n{font-size:34px;font-weight:800;line-height:1;}
   .kpi .n small{font-size:16px;color:var(--muted);font-weight:500;}
   .kpi .l{font-size:12.5px;color:var(--muted);margin-top:8px;letter-spacing:.02em;}
   .kpi.accent .n{color:var(--teal);}
-  .kpi.warn .n{color:var(--amber);}
-  .kpi.bad .n{color:var(--coral);}
+  .kpi.warn .n{color:var(--gold);}
+  .kpi.bad .n{color:var(--rose);}
 
-  .charts-row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:stretch;}
-  .charts-row.even{grid-template-columns:1fr 1fr;}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;}
-  .card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin:0 0 4px;color:var(--paper);}
+  .card h3{font-size:15px;font-weight:700;margin:0 0 4px;color:var(--text);}
   .card .card-sub{font-size:12.5px;color:var(--muted);margin:0 0 16px;}
   .card .chart-wrap{position:relative;}
-  .chart-fallback{display:none;color:var(--muted);font-size:12.5px;padding:20px;text-align:center;font-family:'IBM Plex Mono',monospace;}
+  .chart-fallback{display:none;color:var(--muted);font-size:12.5px;padding:20px;text-align:center;}
 
   .reasons{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
   .reason-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
   .reason-card .topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;}
-  .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:100px;white-space:nowrap;}
-  .tag.acc-no{background:var(--coral-dim);color:var(--coral);}
-  .tag.res-no{background:var(--amber-dim);color:var(--amber);}
-  .tag.freq-veryhigh{background:var(--coral-dim);color:var(--coral);}
-  .tag.freq-high{background:var(--amber-dim);color:var(--amber);}
-  .tag.freq-medium{background:var(--violet-dim);color:var(--violet);}
+  .tag{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+  .tag.freq-veryhigh{background:var(--rose);color:#FFFFFF;}
+  .tag.freq-high{background:var(--rose-dim);color:var(--rose);}
+  .tag.freq-medium{background:var(--gold-bg);color:var(--gold);}
   .tag.freq-low{background:var(--teal-dim);color:var(--teal);}
-  .topic-name{font-weight:600;font-size:14px;}
+  .topic-name{font-weight:700;font-size:14px;}
   .reason-txt{font-size:13.5px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
-  .action-txt{font-size:12.5px;color:var(--teal);line-height:1.5;font-family:'IBM Plex Mono',monospace;word-break:break-word;}
-  .sessions-txt{font-size:11px;color:#5C7292;line-height:1.5;font-family:'IBM Plex Mono',monospace;margin-top:8px;word-break:break-all;}
-
-  .board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-  .board .col h4{font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px;}
-  .board .col{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
-  .item{background:var(--panel-2);border-radius:9px;padding:11px 13px;font-size:13px;line-height:1.45;margin-bottom:9px;border-left:2px solid var(--teal);}
-  .board .col:nth-child(2) .item{border-left-color:var(--amber);}
-  .board .col:nth-child(3) .item{border-left-color:var(--coral);}
-  .item:last-child{margin-bottom:0;}
-  .item b{display:block;font-weight:600;margin-bottom:2px;color:var(--paper);}
+  .action-txt{font-size:12.5px;color:var(--teal);font-weight:600;line-height:1.5;word-break:break-word;}
 
   .persona-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .persona-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;}
   .persona-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
-  .persona-head h3{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;margin:0;}
-  .persona-head .rate{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;}
-  .persona-card.client .rate{color:var(--violet);}
+  .persona-head h3{font-size:17px;font-weight:700;margin:0;}
+  .persona-head .rate{font-size:22px;font-weight:800;}
+  .persona-card.client .rate{color:var(--rose);}
   .persona-card.talent .rate{color:var(--teal);}
   .persona-n{font-size:12.5px;color:var(--muted);margin:0 0 16px;}
   .caveat{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
-  .caveat b{color:var(--paper);}
+  .caveat b{color:var(--text);}
 
   .deflect-track{width:100%;height:40px;border-radius:8px;overflow:hidden;display:flex;background:var(--panel);border:1px solid var(--line);margin:18px 0 12px;}
-  .deflect-seg{height:100%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);font-weight:600;}
+  .deflect-seg{height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
   .deflect-legend{display:flex;gap:24px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);}
   .deflect-legend span{display:inline-flex;align-items:center;gap:6px;}
   .sw{width:9px;height:9px;border-radius:2px;flex:none;}
+
+  .cat-card{background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:8px;}
+  .cat-card:last-child{margin-bottom:0;}
+  .cat-card .cat-row{display:flex;align-items:baseline;gap:10px;margin-bottom:3px;}
+  .cat-card .rank{font-weight:800;color:var(--muted);font-size:12px;width:16px;flex:none;}
+  .cat-card .cat-name{font-weight:700;font-size:13.5px;}
+  .cat-card .cat-desc{font-size:12.5px;color:var(--muted);line-height:1.5;margin-left:26px;}
+
+  .cannot-answer{display:flex;flex-direction:column;gap:10px;}
+  .cannot-card{background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--rose);border-radius:9px;padding:12px 14px;}
+  .cannot-card .cat{font-weight:700;font-size:13.5px;margin-bottom:4px;}
+  .cannot-card .detail{font-size:13px;color:var(--muted);line-height:1.55;}
 
   .note{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
 
@@ -119,7 +116,7 @@
 
   @media(max-width:820px){
     .kpis{grid-template-columns:repeat(2,1fr);}
-    .charts-row,.charts-row.even,.reasons,.board,.persona-row{grid-template-columns:1fr;}
+    .reasons,.persona-row{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -132,8 +129,8 @@
     <p class="sub">Full review of the July 6 production conversation export: all 388 conversations scored against Wanda's <a href="https://peopleflw.atlassian.net/wiki/spaces/PROD/pages/2125463558" style="color:var(--teal)">documented feature scope</a> — Knowledge Base Search, Invoice Management, Employment Cost &amp; Net Salary Estimation, Talent Overview, PTO (overview / approval / export / self-service), and Expense Management.</p>
     <p class="manual-note">★ 128 of these conversations were reviewed manually, line by line, by the Knowledge team.</p>
     <div class="sourcebar">
-      <span class="pill"><span class="dot done"></span>388 conversations reviewed</span>
-      <span class="pill"><span class="dot done"></span>128 reviewed manually by Knowledge team</span>
+      <span class="pill"><span class="dot"></span>388 conversations reviewed</span>
+      <span class="pill"><span class="dot"></span>128 reviewed manually by Knowledge team</span>
       <span class="pill">Source: conversations_export_prod_6_july</span>
       <span class="pill">Scope doc → <a href="https://peopleflw.atlassian.net/wiki/spaces/PROD/pages/2125463558">Confluence</a></span>
     </div>
@@ -155,23 +152,23 @@
       <h3 style="color:var(--teal);">Ticket deflection — how much load Wanda is taking off the CS team</h3>
       <p class="card-sub" style="margin-bottom:0;">Based on the 128 manually-reviewed conversations</p>
       <div class="deflect-track">
-        <div class="deflect-seg" style="width:60%;background:var(--teal);">60%</div>
-        <div class="deflect-seg" style="width:17%;background:var(--amber);">17%</div>
-        <div class="deflect-seg" style="width:23%;background:var(--panel-2);color:var(--muted);">23%</div>
+        <div class="deflect-seg" style="width:60%;background:var(--teal);color:#FFFFFF;">60%</div>
+        <div class="deflect-seg" style="width:17%;background:var(--yellow);color:var(--text);">17%</div>
+        <div class="deflect-seg" style="width:23%;background:var(--rose);color:#FFFFFF;">23%</div>
       </div>
       <div class="deflect-legend">
-        <span><i class="sw" style="background:var(--teal)"></i><b style="color:var(--paper)">60% deflected accurately</b>&nbsp;— fully resolved by Wanda, zero human/CS touch</span>
-        <span><i class="sw" style="background:var(--amber)"></i><b style="color:var(--paper)">17% margin for improvement</b>&nbsp;— Wanda could plausibly have resolved these but didn't</span>
-        <span><i class="sw" style="background:var(--panel-2);border:1px solid var(--line)"></i><b style="color:var(--paper)">23% needs a human agent</b>&nbsp;— legitimate escalations (permissions, platform bugs, compliance edge cases) that would need a person regardless</span>
+        <span><i class="sw" style="background:var(--teal)"></i><b style="color:var(--text)">60% deflected accurately</b>&nbsp;— fully resolved by Wanda, zero human/CS touch</span>
+        <span><i class="sw" style="background:var(--yellow)"></i><b style="color:var(--text)">17% margin for improvement</b>&nbsp;— Wanda could plausibly have resolved these but didn't</span>
+        <span><i class="sw" style="background:var(--rose)"></i><b style="color:var(--text)">23% needs a human agent</b>&nbsp;— legitimate escalations that would need a person regardless</span>
       </div>
     </div>
   </section>
 
   <!-- Top finding callout -->
   <section>
-    <div class="card" style="border-color:rgba(240,180,41,0.35);background:linear-gradient(180deg, rgba(240,180,41,0.08), var(--panel));">
-      <h3 style="color:var(--amber);display:flex;align-items:center;gap:8px;">⚠ Top finding — the "English only" language gate</h3>
-      <p style="font-size:14px;color:var(--paper);line-height:1.6;margin:0 0 6px;max-width:820px;">Wanda refuses to engage with non-English messages before attempting to interpret them — <b>48 of 388 conversations (~12%, roughly 1 in 8)</b> hit this wall. Most affected users eventually got help after re-typing in English; some got zero assistance and the conversation simply ended. A second, distinct variant showed up <b>5 times</b>: the block fired mid-conversation, on a later turn, even after Wanda had already responded normally in English earlier in the same thread. The Knowledge team flagged this independently too: users starting conversations in non-English languages was logged as a <b>High</b>-frequency observation.</p>
+    <div class="card" style="border-color:rgba(235,59,129,0.35);background:linear-gradient(180deg, rgba(235,59,129,0.07), var(--panel));">
+      <h3 style="color:var(--rose);display:flex;align-items:center;gap:8px;">⚠ Top finding — the "English only" language gate</h3>
+      <p style="font-size:14px;color:var(--text);line-height:1.6;margin:0 0 6px;max-width:820px;">Wanda refuses to engage with non-English messages before attempting to interpret them — <b>48 of 388 conversations (~12%, roughly 1 in 8)</b> hit this wall. Most affected users eventually got help after re-typing in English; some got zero assistance and the conversation simply ended. A second, distinct variant showed up <b>5 times</b>: the block fired mid-conversation, on a later turn, even after Wanda had already responded normally in English earlier in the same thread. The Knowledge team flagged this independently too: users starting conversations in non-English languages was logged as a <b>High</b>-frequency observation.</p>
       <p style="font-size:13px;color:var(--muted);margin:0;">Recommendation: at minimum, attempt to interpret the request before refusing; ideally, support responses in-language.</p>
     </div>
   </section>
@@ -191,7 +188,7 @@
   <!-- Knowledge Team Findings -->
   <section>
     <p class="stitle">Knowledge team findings</p>
-    <p class="sdesc">Logged directly by the Knowledge team during manual review, with example conversation IDs. Several of these independently confirm patterns found elsewhere in this review — noted where relevant.</p>
+    <p class="sdesc">Logged directly by the Knowledge team during manual review, ordered from most to least frequent. Several independently confirm patterns found elsewhere in this review — noted where relevant.</p>
     <div class="reasons" id="ktGrid"></div>
   </section>
 
@@ -208,9 +205,9 @@
   <section>
     <p class="stitle">Client vs. Talent — who's asking, and how well is it going</p>
     <p class="sdesc">Splitting the same 388 conversations by who's likely asking: a Client/HR Manager acting on behalf of their company (invoicing, admin permissions, hiring cost estimates, managing a talent's record) vs. a Talent/Employee handling their own PTO, payslip, or profile.</p>
-    <div class="caveat"><b>Methodology note:</b> the export has no explicit user-role field, so this split is inferred from question phrasing (self-referential "my PTO / my payslip" → Talent; admin actions like "add a user," "approve expense," "invoice" → Client). Of 388 conversations, <b>181 classified as Talent</b>, <b>79 as Client</b>, and <b>129 stayed genuinely ambiguous</b> and are excluded from the charts below.</div>
+    <div class="caveat"><b>Methodology note:</b> the export has no explicit user-role field, so this split is inferred from question phrasing (self-referential "my PTO / my payslip" → Talent; admin actions like "add a user," "approve expense," "invoice" → Client). Of 388 conversations, <b>181 classified as Talent</b>, <b>79 as Client</b>, and <b>129 stayed genuinely ambiguous</b> and are excluded below.</div>
 
-    <div class="persona-row" style="margin-bottom:16px;">
+    <div class="persona-row" style="margin-bottom:20px;">
       <div class="persona-card talent">
         <div class="persona-head"><h3>Talent / Employee</h3><span class="rate">85%</span></div>
         <p class="persona-n">n = 181 conversations · 106 resolved / 19 not resolved (valid cases)</p>
@@ -221,30 +218,57 @@
       </div>
     </div>
 
-    <div class="charts-row even">
-      <div class="card">
-        <h3>Top Talent queries</h3>
-        <p class="card-sub">Resolved vs. not, by topic</p>
-        <div class="chart-wrap" style="height:320px;"><canvas id="talentChart"></canvas><div class="chart-fallback" id="talentFallback">Chart failed to render — open the published github.io URL rather than viewing this file on github.com.</div></div>
-      </div>
-      <div class="card">
-        <h3>Top Client queries</h3>
-        <p class="card-sub">Resolved vs. not, by topic</p>
-        <div class="chart-wrap" style="height:320px;"><canvas id="clientChart"></canvas><div class="chart-fallback" id="clientFallback">Chart failed to render — open the published github.io URL rather than viewing this file on github.com.</div></div>
+    <div class="card" style="margin-bottom:16px;">
+      <h3>Talent queries</h3>
+      <p class="card-sub">Top categories (with what they cover), and what couldn't be answered</p>
+      <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:16px;">
+        <div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">1</span><span class="cat-name">PTO &amp; Leave</span></div><div class="cat-desc">Vacation requests, leave balances, and sick-leave questions.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">2</span><span class="cat-name">Contracts &amp; Documents</span></div><div class="cat-desc">Locating, understanding, or requesting changes to employment contracts and paperwork.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">3</span><span class="cat-name">A1 Certificate &amp; Travel</span></div><div class="cat-desc">Cross-border work travel documentation and the Travel Hub.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">4</span><span class="cat-name">Payslip &amp; Payroll</span></div><div class="cat-desc">Payslip access, pay dates, and salary payment questions.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">5</span><span class="cat-name">Onboarding</span></div><div class="cat-desc">Getting started on the platform as a new hire.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">6</span><span class="cat-name">Expense Management</span></div><div class="cat-desc">Submitting, tracking, and querying reimbursable expenses.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">7</span><span class="cat-name">Health &amp; Benefits</span></div><div class="cat-desc">Private healthcare, pensions, and other benefits.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">8</span><span class="cat-name">Tax Documents</span></div><div class="cat-desc">Country-specific tax forms and certificates (Form 16, P11D, IRS filings, etc.).</div></div>
+        </div>
+        <div class="cannot-answer">
+          <div class="cannot-card"><div class="cat">PTO &amp; Leave</div><div class="detail">The Request Absence button goes missing for some users (recurring bug), and PTO balance math has produced contradictory totals within the same conversation on two separate occasions.</div></div>
+          <div class="cannot-card"><div class="cat">Onboarding</div><div class="detail">Talents mid-onboarding have no way to raise a ticket if something goes wrong — flagged 3 separate times.</div></div>
+          <div class="cannot-card"><div class="cat">Payslip &amp; Payroll</div><div class="detail">A talent asking about a payslip password grew frustrated with no path to a human; a pay-date question got wrong info in one case (since corrected).</div></div>
+          <div class="cannot-card"><div class="cat">Tax &amp; Personal Info</div><div class="detail">SSN/tax-ID update questions inconsistently get zero guidance, even though near-identical questions elsewhere in the review got a full, correct answer.</div></div>
+          <div class="cannot-card"><div class="cat">Health &amp; Benefits</div><div class="detail">A pension-contribution question got no substantive help despite an almost identical question being fully answered elsewhere in the review.</div></div>
+          <div class="cannot-card"><div class="cat">Employment Cost / Net Salary</div><div class="detail">The Net Salary Estimation tool failed outright on a Netherlands calculation — a technical error, not a knowledge gap.</div></div>
+        </div>
       </div>
     </div>
-    <p class="note">PTO/Leave is both the most common Talent topic and its weakest spot (5 of 23 unresolved) — mostly the platform bugs below. On the Client side, "Admin/Talent Overview" actions (add admin, remove user, change role) show few "resolved" because Wanda correctly refuses to execute permission-sensitive actions itself and routes them to a human — that's expected behavior, not a failure.</p>
-  </section>
 
-  <!-- Reason themes -->
-  <section>
-    <p class="stitle">Where it broke — illustrative root causes</p>
-    <p class="sdesc">A representative sample of flagged conversations with the reason logged and any action already taken. Not exhaustive — see the full CSV for all 388 rows.</p>
-    <div class="reasons" id="reasonGrid"></div>
+    <div class="card">
+      <h3>Client queries</h3>
+      <p class="card-sub">Top categories (with what they cover), and what couldn't be answered</p>
+      <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:16px;">
+        <div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">1</span><span class="cat-name">Invoice Management</span></div><div class="cat-desc">Viewing, understanding, and managing WorkMotion invoices.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">2</span><span class="cat-name">Admin &amp; Talent Overview</span></div><div class="cat-desc">Adding/removing platform users, changing roles, and viewing talent-level data.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">3</span><span class="cat-name">Offboarding &amp; Resignation</span></div><div class="cat-desc">Ending an employment relationship, notice periods, and the termination process.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">4</span><span class="cat-name">Contracts &amp; Documents</span></div><div class="cat-desc">Drafting, reviewing, or amending employment contracts on a talent's behalf.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">5</span><span class="cat-name">Employment Cost Estimation</span></div><div class="cat-desc">Calculating the full cost of hiring in a given country.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">6</span><span class="cat-name">Payslip &amp; Payroll</span></div><div class="cat-desc">Payroll cycles, cutoff dates, and payment processing on behalf of talents.</div></div>
+          <div class="cat-card"><div class="cat-row"><span class="rank">7</span><span class="cat-name">Expense Management</span></div><div class="cat-desc">Reviewing and approving talent expense submissions.</div></div>
+        </div>
+        <div class="cannot-answer">
+          <div class="cannot-card"><div class="cat">Invoice Management</div><div class="detail">No CSV export exists, so Wanda suggests manually checking every invoice instead. Separately, "Invoice with appendix" terminology was denied in one conversation despite being explained correctly in another — a retrieval inconsistency, not a true gap.</div></div>
+          <div class="cannot-card"><div class="cat">Offboarding &amp; Probation</div><div class="detail">Probation end dates weren't available in one case (this has since been fixed — Wanda can now pull them).</div></div>
+          <div class="cannot-card"><div class="cat">Compensation</div><div class="detail">The wrong process was shared for adding a bonus to a talent (since corrected in the source article).</div></div>
+          <div class="cannot-card"><div class="cat">Health &amp; Benefits</div><div class="detail">Statutory benefits were confused with employment conditions in one case, giving an inaccurate answer.</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="note">On the Client side, "Admin &amp; Talent Overview" actions (add admin, remove user, change role) are common but rarely show as "resolved" — Wanda correctly refuses to execute permission-sensitive actions itself and routes them to a human. That's expected behavior, not a failure.</p>
   </section>
 
   <footer>
-    Built from <code>conversations_export_prod_6_july_-_Analysis.csv</code> (5,268 turn-level rows across 388 reviewed conversations, 128 reviewed manually by the Knowledge team). Wanda's documented feature scope: <a href="https://peopleflw.atlassian.net/wiki/spaces/PROD/pages/2125463558">Wanda — Current Scope and Capabilities</a>.
+    Built from <code class="mono">conversations_export_prod_6_july_-_Analysis.csv</code> (5,268 turn-level rows across 388 reviewed conversations, 128 reviewed manually by the Knowledge team). Wanda's documented feature scope: <a href="https://peopleflw.atlassian.net/wiki/spaces/PROD/pages/2125463558">Wanda — Current Scope and Capabilities</a>.
   </footer>
 
 </div>
@@ -252,134 +276,58 @@
 <script>
 function initDashboard() {
   if (typeof Chart === 'undefined') {
-    ['topicFallback','talentFallback','clientFallback'].forEach(function(id){
-      var el = document.getElementById(id);
-      if (el) el.style.display = 'block';
-    });
+    var fb = document.getElementById('topicFallback');
+    if (fb) fb.style.display = 'block';
     console.error('Chart.js failed to load from CDN.');
-    return;
-  }
-  Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
-  Chart.defaults.color = '#8CA0BD';
-
-  function safeChart(canvasId, fallbackId, config) {
+  } else {
+    Chart.defaults.font.family = "'Geist', sans-serif";
+    Chart.defaults.color = '#4C726D';
     try {
-      var el = document.getElementById(canvasId);
-      if (!el) throw new Error('canvas not found: ' + canvasId);
-      new Chart(el, config);
+      new Chart(document.getElementById('topicChart'), {
+        type: 'bar',
+        data: {
+          labels: ["Contracts & Documents","Expense Management","Payslip / Payroll","PTO / Leave","Onboarding","Offboarding / Resignation","A1 Certificate / Travel","Invoice Management","Health / Benefits","Tax Documents","Time Tracking","Admin / Talent Overview","Employment Cost / Net Salary","Sick Leave","Profile Updates","Public Holidays","Bank Details / Payment"],
+          datasets: [{
+            data: [46,28,25,24,17,17,16,16,15,15,14,13,11,11,11,8,5],
+            backgroundColor: '#00826E',
+            borderRadius: 4,
+            barThickness: 14
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(0,70,67,0.08)' } },
+            y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+          }
+        }
+      });
     } catch (e) {
-      console.error('Chart render failed for', canvasId, e);
-      var fb = document.getElementById(fallbackId);
-      if (fb) fb.style.display = 'block';
+      console.error('Chart render failed', e);
+      var fb2 = document.getElementById('topicFallback');
+      if (fb2) fb2.style.display = 'block';
     }
   }
 
-  safeChart('topicChart', 'topicFallback', {
-    type: 'bar',
-    data: {
-      labels: ["Contracts & Documents","Expense Management","Payslip / Payroll","PTO / Leave","Onboarding","Offboarding / Resignation","A1 Certificate / Travel","Invoice Management","Health / Benefits","Tax Documents","Time Tracking","Admin / Talent Overview","Employment Cost / Net Salary","Sick Leave","Profile Updates","Public Holidays","Bank Details / Payment"],
-      datasets: [{
-        data: [46,28,25,24,17,17,16,16,15,15,14,13,11,11,11,8,5],
-        backgroundColor: '#4FD1C5',
-        borderRadius: 4,
-        barThickness: 14
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.06)' } },
-        y: { grid: { display: false }, ticks: { font: { size: 11 } } }
-      }
-    }
-  });
-
-  safeChart('talentChart', 'talentFallback', {
-    type: 'bar',
-    data: {
-      labels: ["PTO / Leave","Contracts & Docs","A1 Cert / Travel","Payslip / Payroll","Expenses","Onboarding","Tax Documents","Health/Benefits"],
-      datasets: [
-        { label: 'Resolved', data: [10,7,10,9,12,9,7,9], backgroundColor: '#4FD1C5', borderRadius: 3 },
-        { label: 'Not resolved', data: [5,1,0,2,0,3,2,1], backgroundColor: '#F0685F', borderRadius: 3 }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10.5 } } },
-        y: { grid: { color: 'rgba(255,255,255,0.06)' }, beginAtZero: true }
-      }
-    }
-  });
-
-  safeChart('clientChart', 'clientFallback', {
-    type: 'bar',
-    data: {
-      labels: ["Other","Invoice Mgmt","Admin/Talent Ovw","Offboard/Resign","Contracts & Docs","Employment Cost Est.","Payslip/Payroll","Expenses"],
-      datasets: [
-        { label: 'Resolved', data: [7,12,1,5,3,4,2,2], backgroundColor: '#9B8CF2', borderRadius: 3 },
-        { label: 'Not resolved', data: [2,2,0,0,0,0,0,0], backgroundColor: '#F0685F', borderRadius: 3 }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10.5 } } },
-        y: { grid: { color: 'rgba(255,255,255,0.06)' }, beginAtZero: true }
-      }
-    }
-  });
-
-  var reasons = [
-    {topic:"PTO", acc:"No", res:"No", reason:"Absence missing from the Help Center article.", action:"Solution researched on SF and added to the article."},
-    {topic:"Invoicing", acc:"No", res:"No", reason:"Suggested manually checking every invoice to find bonus amounts.", action:"No CSV export capability — recommended a support ticket instead."},
-    {topic:"Mileage", acc:"No", res:"No", reason:"Article covers private-car business trips, but Wanda didn't connect \"mileage\" to it — and the earlier fix didn't fully hold.", action:"Re-verify the mileage trigger-term fix."},
-    {topic:"PTO balance with carryover", acc:"No", res:"No", reason:"Stated entitlement/carry-over/remaining figures didn't reconcile with each other even after Wanda tried to self-correct.", action:"ENGINEERING: PTO balance calculation logic needs investigation."},
-    {topic:"Expense CSV export", acc:"No", res:"No", reason:"Called the wrong export tool (generated a PTO export instead of an expense export), then admitted no expense export exists at all.", action:"ENGINEERING: tool-selection bug plus missing capability."},
-    {topic:"Net Salary Estimation", acc:"No", res:"No", reason:"Explicit technical failure calculating net salary — the documented feature didn't run.", action:"ENGINEERING: investigate tool reliability."},
-    {topic:"\"Invoice with appendix\"", acc:"No", res:"No", reason:"Claimed no information here, despite explaining this exact term accurately in another conversation.", action:"ENGINEERING: investigate retrieval inconsistency for a documented term."},
-    {topic:"Contract location", acc:"No", res:"No", reason:"Answered normally in English, then incorrectly triggered the English-only block on the very next turn.", action:"ENGINEERING: mid-conversation language-gate misfire (confirmed 5x)."},
-    {topic:"Payslip password", acc:"Yes", res:"No", reason:"Talent grew visibly frustrated; Wanda has no path to escalate a frustrated user to a human.", action:"Needs a 'hand off to human' pattern."},
-    {topic:"Onboarding progress", acc:"No", res:"No", reason:"No way for talents to raise a ticket mid-onboarding.", action:"Flagged — needs a product fix."},
-  ];
-  var grid = document.getElementById('reasonGrid');
-  reasons.forEach(function(r) {
-    var div = document.createElement('div');
-    div.className = 'reason-card';
-    var resTag = r.res === null ? '' : '<span class="tag ' + (r.res==='No'?'res-no':'') + '" style="background:' + (r.res==='No'?'':'var(--teal-dim)') + ';color:' + (r.res==='No'?'':'var(--teal)') + '">' + (r.res==='No'?'Unresolved':'Resolved') + '</span>';
-    div.innerHTML =
-      '<div class="topline">' +
-        '<span class="topic-name">' + r.topic + '</span>' +
-        '<span style="display:flex;gap:6px;">' +
-          '<span class="tag ' + (r.acc==='No'?'acc-no':'') + '" style="background:' + (r.acc==='No'?'':'var(--teal-dim)') + ';color:' + (r.acc==='No'?'':'var(--teal)') + '">' + (r.acc==='No'?'Inaccurate':'Accurate') + '</span>' +
-          resTag +
-        '</span>' +
-      '</div>' +
-      '<div class="reason-txt">' + r.reason + '</div>' +
-      '<div class="action-txt">' + r.action + '</div>';
-    grid.appendChild(div);
-  });
-
-  var ktFindings = [
-    {obs:"Request absence button missing", freq:"high", solution:"Wanda should tell the Talent about HRIS integration.", sessions:"f63d2c45-a66f-497d-867c-2fc97eec3a65", note:"Confirmed independently in this review — recurring PTO-submission UI cluster."},
-    {obs:"Probation period duration mentioned but not the exact end date", freq:"low", solution:"Responses need to be more specific — the user asked for the end date, not the length of probation.", sessions:"00773eb6-5dee-4984-8030-bb5934942aa4", note:null},
-    {obs:"Contract changes", freq:"low", solution:"Clear answer needed on what can and can't be requested from the platform.", sessions:"7dcb0443-a159-4011-ba44-2c4be8c0a5f7", note:null},
-    {obs:"KB links redirect to a Stonly-hosted website in all responses", freq:"veryhigh", solution:"Link correction needed across the board.", sessions:"All sessions", note:"Affects nearly every sourced answer Wanda gives — highest-frequency item on the Knowledge team's list."},
-    {obs:"Talents & Clients need support during onboarding", freq:"high", solution:"(No specific fix logged.)", sessions:"cca506d4-87d9-4647-b1fb-d6510122e3d5", note:"Matches the 'no in-flow ticket option during onboarding' gap found elsewhere in this review."},
-    {obs:"Wanda still uses outdated product terms \"WorkGlobal\" and \"WorkDirect\"", freq:"high", solution:"Should use the correct current terms: \"Employer of Record\" and \"Direct Hiring.\"", sessions:"dccc0cd0-cefe-4994-bf6b-32e0c632f129, 95e8b06a-57f2-43a3-ad9d-1446606f43a9", note:null},
-    {obs:"Net Salary Estimation tool failed", freq:"low", solution:"Wanda should give net salary estimations consistently without failing.", sessions:"651eca08-cd11-4cb7-afd0-18ba96b3d876", note:"Same conversation independently flagged as a tool failure in this review."},
-    {obs:"Users start conversations in non-English languages", freq:"high", solution:"Additional language support for Wanda would help.", sessions:"25ce63cc-119d-4134-aa76-1f982a763d41", note:"Matches this review's #1 finding — the English-only language gate."},
-    {obs:"Wanda advises users to raise tickets for country-specific requirements", freq:"low", solution:"Should point users to the relevant country guide/articles first, not raise a ticket immediately.", sessions:"91fa6187-6963-4a43-bdc3-b1ab6b414ea3", note:null},
-    {obs:"Outdated information and processes (e.g. A1 certificates, Travel Hub)", freq:"medium", solution:"Wanda's knowledge should be refreshed more frequently.", sessions:"d5cda392-ba48-4dfa-9047-eeaac9732c37, 4fa0bab2-cda9-454c-9de7-5ef59be704fb", note:null},
-    {obs:"Wanda defaults to \"raise a ticket\" instead of trying to solve the query", freq:"high", solution:"Should ask follow-up questions and point to relevant articles before defaulting to a ticket.", sessions:"f3edad13-17a7-40d8-9631-44191e1e715b, 20c31496-f884-47d2-af1c-ae0f879705e7, a2ecc726-a0dc-4bb7-b5d2-72b06f12640d", note:null},
-    {obs:"Clients asking to change a user's permission to \"admin\" — Wanda doesn't map this to \"HR Manager\"", freq:"high", solution:"Should direct them to the article on adding HR Managers to the platform.", sessions:"529786dd-c1ba-4d63-8346-8ecf9729053a, 3d0c98a3-d629-4c2e-9853-18e386181248, 49aa511f-a050-4599-b39f-b63daf0cd800", note:"Explains the root cause behind several 'change user role' escalations seen elsewhere in this review."},
-    {obs:"Users want to edit profile info — Wanda tells them to raise a ticket instead of sharing the right article", freq:"high", solution:"Should correctly fetch the article and share the link.", sessions:"fb0418dd-87ee-4003-b8f7-3f4534d56cbe, a2ecc726-a0dc-4bb7-b5d2-72b06f12640d", note:"Matches the profile-editing retrieval inconsistency flagged in this review."},
-  ];
+  var freqRank = {veryhigh:4, high:3, medium:2, low:1};
   var freqLabel = {veryhigh:'Very High', high:'High', medium:'Medium', low:'Low'};
+  var ktFindings = [
+    {obs:"Request absence button missing", freq:"high", solution:"Wanda should tell the Talent about HRIS integration.", note:"Confirmed independently in this review — recurring PTO-submission UI cluster."},
+    {obs:"Probation period duration mentioned but not the exact end date", freq:"low", solution:"Responses need to be more specific — the user asked for the end date, not the length of probation.", note:null},
+    {obs:"Contract changes", freq:"low", solution:"Clear answer needed on what can and can't be requested from the platform.", note:null},
+    {obs:"KB links redirect to a Stonly-hosted website in all responses", freq:"veryhigh", solution:"Link correction needed across the board.", note:"Affects nearly every sourced answer Wanda gives — highest-frequency item on the Knowledge team's list."},
+    {obs:"Talents & Clients need support during onboarding", freq:"high", solution:"(No specific fix logged.)", note:"Matches the 'no in-flow ticket option during onboarding' gap found elsewhere in this review."},
+    {obs:"Wanda still uses outdated product terms \"WorkGlobal\" and \"WorkDirect\"", freq:"high", solution:"Should use the correct current terms: \"Employer of Record\" and \"Direct Hiring.\"", note:null},
+    {obs:"Net Salary Estimation tool failed", freq:"low", solution:"Wanda should give net salary estimations consistently without failing.", note:"Same conversation independently flagged as a tool failure in this review."},
+    {obs:"Users start conversations in non-English languages", freq:"high", solution:"Additional language support for Wanda would help.", note:"Matches this review's #1 finding — the English-only language gate."},
+    {obs:"Wanda defaults to raising a ticket instead of resolving the query", freq:"high", solution:"Ask follow-up questions and point to the relevant article or country guide before defaulting to a ticket — seen with country-specific requirement questions and profile-editing requests where the right article exists but wasn't surfaced.", note:null},
+    {obs:"Outdated information and processes (e.g. A1 certificates, Travel Hub)", freq:"medium", solution:"Wanda's knowledge should be refreshed more frequently.", note:null},
+    {obs:"Clients asking to change a user's permission to \"admin\" — Wanda doesn't map this to \"HR Manager\"", freq:"high", solution:"Should direct them to the article on adding HR Managers to the platform.", note:"Explains the root cause behind several 'change user role' escalations seen elsewhere in this review."},
+  ];
+  ktFindings.sort(function(a, b) { return freqRank[b.freq] - freqRank[a.freq]; });
+
   var ktGrid = document.getElementById('ktGrid');
   ktFindings.forEach(function(f) {
     var div = document.createElement('div');
@@ -391,8 +339,7 @@ function initDashboard() {
         '<span class="tag freq-' + f.freq + '">' + freqLabel[f.freq] + '</span>' +
       '</div>' +
       '<div class="reason-txt">' + f.solution + '</div>' +
-      noteHtml +
-      '<div class="sessions-txt">' + f.sessions + '</div>';
+      noteHtml;
     ktGrid.appendChild(div);
   });
 }
