@@ -121,10 +121,20 @@
 </style>
 </head>
 <body>
+<div id="gate" style="position:fixed;inset:0;background:#FFFFFF;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'Geist',sans-serif;">
+  <div style="width:100%;max-width:340px;padding:0 24px;text-align:center;">
+    <p style="font-weight:800;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#EB3B81;margin:0 0 10px;">Wanda Monthly Review</p>
+    <h2 style="font-size:22px;font-weight:800;color:#062C29;margin:0 0 22px;">Enter the team passphrase</h2>
+    <input id="gate-input" type="password" placeholder="Passphrase" style="width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(0,70,67,0.25);font-family:'Geist',sans-serif;font-size:14px;margin-bottom:10px;box-sizing:border-box;outline:none;">
+    <button id="gate-btn" style="width:100%;padding:12px 14px;border-radius:8px;border:none;background:#00826E;color:#FFFFFF;font-family:'Geist',sans-serif;font-weight:700;font-size:14px;cursor:pointer;">Unlock</button>
+    <p id="gate-error" style="color:#EB3B81;font-size:13px;margin:12px 0 0;display:none;">That's not it — try again.</p>
+  </div>
+</div>
+<div id="dashboard-content" style="display:none;">
 <div class="wrap">
 
   <header>
-    <p class="eyebrow">HR &amp; Finance AI Assistant · Product / Support Ops</p>
+    <p class="eyebrow">WorkMotion AI Assistant · Product / Support Ops</p>
     <h1>Wanda <span>— Monthly Conversation Review</span></h1>
     <p class="sub">Full review of the July 6 production conversation export: all 388 conversations scored against Wanda's <a href="https://peopleflw.atlassian.net/wiki/spaces/PROD/pages/2125463558" style="color:var(--teal)">documented feature scope</a> — Knowledge Base Search, Invoice Management, Employment Cost &amp; Net Salary Estimation, Talent Overview, PTO (overview / approval / export / self-service), and Expense Management.</p>
     <p class="manual-note">★ 128 of these conversations were reviewed manually, line by line, by the Knowledge team.</p>
@@ -149,7 +159,7 @@
   <!-- Ticket deflection -->
   <section style="padding-top:36px;">
     <div class="card">
-      <h3 style="color:var(--teal);">Ticket deflection — how much load Wanda is taking off the CS team</h3>
+      <h3 style="color:var(--teal);">Ticket deflection — how much load Wanda is taking off the Operations team</h3>
       <p class="card-sub" style="margin-bottom:0;">Based on the 128 manually-reviewed conversations</p>
       <div class="deflect-track">
         <div class="deflect-seg" style="width:60%;background:var(--teal);color:#FFFFFF;">60%</div>
@@ -157,7 +167,7 @@
         <div class="deflect-seg" style="width:23%;background:var(--rose);color:#FFFFFF;">23%</div>
       </div>
       <div class="deflect-legend">
-        <span><i class="sw" style="background:var(--teal)"></i><b style="color:var(--text)">60% deflected accurately</b>&nbsp;— fully resolved by Wanda, zero human/CS touch</span>
+        <span><i class="sw" style="background:var(--teal)"></i><b style="color:var(--text)">60% deflected accurately</b>&nbsp;— fully resolved by Wanda, zero human/Operations touch</span>
         <span><i class="sw" style="background:var(--yellow)"></i><b style="color:var(--text)">17% margin for improvement</b>&nbsp;— Wanda could plausibly have resolved these but didn't</span>
         <span><i class="sw" style="background:var(--rose)"></i><b style="color:var(--text)">23% needs a human agent</b>&nbsp;— legitimate escalations that would need a person regardless</span>
       </div>
@@ -181,7 +191,7 @@
       <div class="kpi accent"><div class="n">91<small>%</small></div><div class="l">Accurate responses (338 / 372)</div></div>
       <div class="kpi warn"><div class="n">84<small>%</small></div><div class="l">Queries resolved (205 / 245)</div></div>
       <div class="kpi"><div class="n">48</div><div class="l">Conversations hitting the language gate</div></div>
-      <div class="kpi bad"><div class="n">53<small>%</small></div><div class="l">Fully self-resolved, zero human/CS touch (205 / 388)</div></div>
+      <div class="kpi bad"><div class="n">53<small>%</small></div><div class="l">Fully self-resolved, zero human/Operations touch (205 / 388)</div></div>
     </div>
   </section>
 
@@ -272,6 +282,7 @@
   </footer>
 
 </div>
+</div>
 
 <script>
 function initDashboard() {
@@ -307,7 +318,7 @@ function initDashboard() {
     } catch (e) {
       console.error('Chart render failed', e);
       var fb2 = document.getElementById('topicFallback');
-      if (fb2) fb2.style.display = 'block';
+      if (fb2) { fb2.style.display = 'block'; fb2.textContent = 'Chart failed to render: ' + (e && e.message ? e.message : e); }
     }
   }
 
@@ -344,11 +355,47 @@ function initDashboard() {
   });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initDashboard);
-} else {
-  initDashboard();
-}
+(function() {
+  var CORRECT_HASH = 'd9fb92e3bbe65be1f1aad4a82eef4567f7a1ebe2cd110c8049b9698be7a70c88';
+
+  async function sha256(text) {
+    var enc = new TextEncoder().encode(text);
+    var buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+  }
+
+  function unlock() {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('dashboard-content').style.display = 'block';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() { initDashboard(); });
+    });
+  }
+
+  if (sessionStorage.getItem('wanda_unlocked') === 'yes') {
+    unlock();
+  } else {
+    var input = document.getElementById('gate-input');
+    var btn = document.getElementById('gate-btn');
+    var err = document.getElementById('gate-error');
+
+    function tryUnlock() {
+      sha256(input.value).then(function(hash) {
+        if (hash === CORRECT_HASH) {
+          sessionStorage.setItem('wanda_unlocked', 'yes');
+          unlock();
+        } else {
+          err.style.display = 'block';
+          input.value = '';
+          input.focus();
+        }
+      });
+    }
+    btn.addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryUnlock(); });
+    input.focus();
+  }
+})();
 </script>
 </body>
 </html>
